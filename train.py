@@ -119,11 +119,11 @@ class Trainer:
 
     @staticmethod
     def _gradient_penalty(f, real, fake):
-        def _interpolate(r, f):
-            shape = [tf.shape(r)[0] + [1]] * (r.shape.ndims - 1)
+        def _interpolate(a, b):
+            shape = [tf.shape(a)[0]] + [1] * (a.shape.ndims - 1)
             alpha = tf.random.uniform(shape=shape, minval=0., maxval=1.)
-            inter = r + alpha * (f - r)
-            inter.set_shape(r.shape)
+            inter = a + alpha * (b - a)
+            inter.set_shape(a.shape)
             return inter
 
         x = _interpolate(real, fake)
@@ -135,5 +135,3 @@ class Trainer:
         gp = tf.reduce_mean((norm - 1.)**2)
 
         return gp
-
-
